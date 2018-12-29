@@ -88,10 +88,6 @@ def count_all_lines(file_):
     with open(file_, "r") as f:
         return len(f.readlines())
 
-#def count_songs2():
-#    """Counts the lines in SONG_SET_FILE. Returns Integer."""
-#    return sum(1 for line in set(open(SONG_SET_FILE, "r").readlines()))
-
 def write_to_file(list_, file_):
     """Writes 'list_' to 'file_'. Returns None."""
     with open(file_, "w+") as f:
@@ -115,19 +111,6 @@ def count_files(dir_):
     return sp.run(cmd, encoding="utf-8", shell=True,
         stdout=sp.PIPE, stderr=sp.PIPE).stdout.strip()
 
-#def count_lyrics():
-#    """Counts amount of files in LYRIC_DIR. Returns Integer."""
-#    lyrics_dirs = glob("/Volumes/YUUSHI/AllLyricscategory_*")
-#    temp_lyrics_dir = glob("/Volumes/YUUSHI/AllLyrics")
-#    total = 0
-#    for file_ in lyrics_dirs:
-#        total += sum(1 for line in Path(file_).iterdir())
-#    for file_ in temp_lyrics_dir:
-#        total += sum(1 for line in Path(file_).iterdir())
-#    for line in open(LYRIC_ERRORS, "r").readlines():
-#        total += 1
-#    return total
-
 #test manually, for now
 def buttontest():
     """Prints test line to terminal. Returns None."""
@@ -147,5 +130,5 @@ def add_suffixes(list_, suffix):
 def add_prefixes(list_, prefix):
     """Prepends 'prefix' to elements in 'list_obj'. Returns List."""
     temp = []
-    [temp.append(each+prefix) for each in list_]
+    [temp.append(prefix+each) for each in list_]
     return temp

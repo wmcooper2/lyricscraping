@@ -24,7 +24,7 @@ def redraw_category_total(total):
     c_total.grid(column=2, row=1, pady=6, padx=6)
 
 def redraw_category_errors(total):
-    """Redraws the category totals. Returns None."""
+    """Redraws the category errors. Returns None."""
     c_errors = ttk.Label(status_frame, 
         text=str(total))
     c_errors.grid(column=1, row=1, pady=6, padx=6)
@@ -33,7 +33,6 @@ def scrape_categories():
     """Scrapes categories from www.lyrics.com"""
     print("--- CATEGORY SCRAPING STARTED ---")
     print("Scraping from ::", HOME_PAGE)
-    
     soup = get_soup(HOME_PAGE)
     category_links = get_links(soup, "^/artists/")
     a_tags = set(category_links)
@@ -41,7 +40,6 @@ def scrape_categories():
     suffixed = add_suffixes(hrefs, "/99999")
     categories = add_prefixes(suffixed, HOME_PAGE)
     save(categories, CATEGORY_FILE)
-    
     successes = count_all_lines(CATEGORY_FILE)
     errors =count_all_lines(CATEGORY_ERRORS)
     
@@ -53,6 +51,24 @@ def scrape_categories():
     c_errors.grid_forget()
     redraw_category_errors(errors)
     print("--- CATEGORY SCRAPING FINISHED ---")
+#    replace final print statement with message box
+
+def redraw_artist_total(total):
+    """Redraws the artist totals. Returns None."""
+    a_total = ttk.Label(status_frame, 
+        text=str(total))
+    a_total.grid(column=2, row=2, pady=6, padx=6)
+
+def redraw_artist_errors(total):
+    """Redraws the artist errors. Returns None."""
+    a_errors = ttk.Label(status_frame, 
+        text=str(total))
+    a_errors.grid(column=1, row=2, pady=6, padx=6)
+
+def scrape_artists():
+    """Scrapes artists from www.lyrics.com"""
+    pass
+
 
 #Main
 win = tk.Tk()
@@ -77,19 +93,17 @@ header2.grid(column=1, row=0, pady=6, padx=6)
 header3 = ttk.Label(status_frame, text="Totals")
 header3.grid(column=2, row=0, pady=6, padx=6)
 
-
-
-
-
 #buttons, left column
 c_btn = ttk.Button(status_frame, text="Category", 
-    command=scrape_categories) #sc.scrape
-#working on this one
-
+    command=scrape_categories)
 c_btn.grid(column=0, row=1, pady=6, padx=6)
 a_btn = ttk.Button(status_frame, text="Artist", 
     command=buttontest)
 a_btn.grid(column=0, row=2, pady=6, padx=6)
+#working on this one
+
+
+
 s_btn = ttk.Button(status_frame, text="Song", 
     command=buttontest)
 s_btn.grid(column=0, row=3, pady=6, padx=6)

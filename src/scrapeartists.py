@@ -12,11 +12,14 @@ import requests
 
 #custom
 from constants import *
-from scrapeutil import get_links
-from scrapeutil import get_soup
-from scrapeutil import persistent_request
-from scrapeutil import save_json
-from scrapeutil import save
+from scrapeutil import *
+#from scrapeutil import get_links
+#from scrapeutil import get_soup
+#from scrapeutil import persistent_request
+#from scrapeutil import save_json
+#from scrapeutil import save
+
+
 
 logging.basicConfig(filename=ARTIST_ERRORS, level=logging.INFO, format="")
 
@@ -45,7 +48,8 @@ def make_artist_dict(artists):
         artist_dict[artist_name] = link
     return artist_dict
 
-def make_artist_list(artists):
+
+def make_artist_list2(artists):
     """Makes a list of links only. Returns List."""
     list_ = []
     for artist in artists:
@@ -69,39 +73,35 @@ def category_stats(list_obj, location):
         file_obj.write(line)
         file_obj.write("\n")
 
+def format_artist_link(artist):
+    """Formats URL for the artist"""
+    link = artist.get("href")
+    return HOME_PAGE+"/"+link
 
 #Main
 #call this in error recovery
 def single_scrape(link):
     """A single scraping attempt of 'link'. Returns None."""
-    try:
+
+#    except:
+#        print("ERROR::\t", link)
+#        logging.info(link)
+    pass
+
+def scrape():
+    cat_links = load_file_list(CATEGORY_FILE)
+    for link in cat_links:
         soup = get_soup(link)
-        artist_links = get_links(soup, "^artist")
+        art_links = get_links(soup, "^artist")
         category = Path(link).parts[3]
-
-        #json file, artist name and link
-        artists_dict = make_artist_dict(artist_links)
-        json_file = ARTIST_DIR+"/Category_"+category+"_Artists_json.txt"
-        save_json(artists_dict, json_file) 
-
-        #plain text file, link only
-        text_file = (ARTIST_DIR+"/Category_"+category
-                               +"_Artists_linksonly.txt") 
-        link_list = make_artist_list(artist_links)
-        save_list(link_list, text_file)
-        print("SCRAPED ::", link)
-
-    except:
-        print("ERROR::\t", link)
-        logging.info(link)
-
-def scrape_everything():
-    category_links = load_category_links(CATEGORY_FILE)
-    for link in category_links:
-        single_scrape(link)
+        text_file = (ARTIST_DIR+category+"_"+"artistlinks.txt") 
+        long_list = list(map(format_artist_link, art_links))
+#        print(len(long_list), text_file)
+        save(long_list, text_file)
+        print("saved", text_file)
+        #save to long list?
 
 if __name__ == "__main__":
     print("--- ARTIST SCRAPING STARTED ---")
-    scrape_everything()
+    scrape()
     print("--- ARTIST SCRAPING FINISHED ---")
-    #timetaken()

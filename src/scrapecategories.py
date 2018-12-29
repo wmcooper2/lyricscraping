@@ -12,12 +12,6 @@ import requests
 #custom
 from constants import *
 from scrapeutil import *
-#from scrapeutil import get_hrefs
-#from scrapeutil import get_links
-#from scrapeutil import get_soup
-#from scrapeutil import persistent_request
-#from scrapeutil import save
-
 
 #dont need logging here? what about error recovery script?
 
