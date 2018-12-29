@@ -16,7 +16,7 @@ from scrapeutil import get_links
 from scrapeutil import get_soup
 from scrapeutil import persistent_request
 from scrapeutil import save_json
-from scrapeutil import save_list
+from scrapeutil import save
 
 logging.basicConfig(filename=ARTIST_ERRORS, level=logging.INFO, format="")
 

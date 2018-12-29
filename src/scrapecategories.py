@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
-"""This module scrapes for the category links."""
-
+"""Scrapes category links."""
 #stand lib
 from pathlib import Path
+from pprint import pprint
 import re
 from time import sleep
 
@@ -12,36 +11,15 @@ import requests
 
 #custom
 from constants import *
-from scrapeutil import get_links
-from scrapeutil import get_soup
-from scrapeutil import persistent_request
-from scrapeutil import save_list
+from scrapeutil import *
+#from scrapeutil import get_hrefs
+#from scrapeutil import get_links
+#from scrapeutil import get_soup
+#from scrapeutil import persistent_request
+#from scrapeutil import save
+
 
 #dont need logging here? what about error recovery script?
-
-def add_suffixes(list_obj, suffix):
-    """Appends 'suffix' to all elements in 'list_obj'. Returns List."""
-    temp = []
-    for each in list_obj:
-        temp.append(each + suffix)
-    return temp
-
-def add_prefixes(list_obj, prefix):
-    """Prepends 'prefix' to all elements in 'list_obj'. Returns List."""
-    temp = []
-    for each in list_obj:
-        temp.append(prefix + each)
-    return temp
- 
-#replace with set?
-def remove_duplicate_links(list_obj):
-    """Removes duplicate links. Returns List."""
-    temp = []
-    for link in list_obj:
-        letter_category = link.get("href")
-        if letter_category not in temp:
-            temp.append(letter_category)
-    return temp
 
 def category_file():
     """Loads category links from text file. Returns List."""
@@ -60,16 +38,21 @@ def single_scrape(link):
     pass
 
 # Main function, call from external scripts
-def scrape_everything():
-    soup = get_soup(HOME_PAGE)
-    category_links = get_links(soup, "^/artists/")
-    category_names = remove_duplicate_links(category_links)
-    suffixed_categories = add_suffixes(category_names, "/99999")
-    categories = add_prefixes(suffixed_categories, HOME_PAGE)
-    save_list(categories, CATEGORY_FILE)
-
-if __name__ == "__main__":
+def scrape():
     print("--- CATEGORY SCRAPING STARTED ---")
     print("Scraping from ::", HOME_PAGE)
-    scrape_everything()
+    
+    soup = get_soup(HOME_PAGE)
+    category_links = get_links(soup, "^/artists/")
+    a_tags = set(category_links)
+    hrefs = get_hrefs(a_tags)
+    suffixed = add_suffixes(hrefs, "/99999")
+    categories = add_prefixes(suffixed, HOME_PAGE)
+    save(categories, CATEGORY_FILE)
+
+    #when/where are the errors saved?
+
     print("--- CATEGORY SCRAPING FINISHED ---")
+
+if __name__ == "__main__":
+    scrape()
