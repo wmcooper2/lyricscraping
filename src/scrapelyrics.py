@@ -18,7 +18,6 @@ from constants import *
 from scrapeutil import get_soup
 from scrapeutil import persistent_request
 
-SAVE_DIR        = CWD+"/alllyrics/"
 filter_ = SoupStrainer("a")
 logging.basicConfig(filename=LYRIC_ERRORS, level=logging.INFO, format="")
 
@@ -41,7 +40,7 @@ def extract_lyrics(song_soup):
 
 def save_lyrics(artist, song_name, lyrics):
     """Writes lyrics to the artist's folder. Returns None."""
-    file_name = SAVE_DIR+artist+"_"+song_name+".txt"
+    file_name = RESULTS+artist+"_"+song_name+".txt"
     with open(file_name, "w+") as file_:
         file_.write(str(lyrics))
 

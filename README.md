@@ -2,6 +2,8 @@
 Scrapes lyrics from 'www.lyrics.com'
 
 ### Operation
+_The times taken to complete a stage as shown below are when the program is running on a macbook air. This machine limits the stress on the network by restricting webpage requests to the speed at which it can process which is about one link per second, roughly. So far, this has been the easy way to reduce (almost eliminate) errors due to overloading my home router._
+
 (not finished)
 * run `python3 webscrapergui.py`
 * scraping is done in 4 stages;
@@ -13,3 +15,11 @@ Scrapes lyrics from 'www.lyrics.com'
 * when the value to the right of the button is populated, the stage is finished.
   * (change to a different signal when finished)
 
+1. Click "Category" button
+  * may take 20 seconds
+2. Click "Artist" button
+  * may take 3 minutes
+3. Click "Song" button
+  * may take 1 week
+4. Click "Lyric" button
+  * may take 4 months

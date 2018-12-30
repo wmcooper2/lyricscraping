@@ -14,7 +14,6 @@ import requests
 
 #custom
 from constants import *
-import dirsandfiles_test as df
 
 filter_ = SoupStrainer("a")
 
@@ -54,6 +53,9 @@ def get_soup(link, filter_=None):
     """Gets soup from a link. Returns BeautifulSoup object."""
     request = persistent_request(link)
     return BeautifulSoup(request.content, "html.parser", parse_only=filter_)
+
+
+
 
 #test manually, for now
 def save(list_, location):
@@ -123,12 +125,14 @@ def buttontest():
 
 def add_suffixes(list_, suffix):
     """Appends 'suffix' to elements in 'list_obj'. Returns List."""
-    temp = []
-    [temp.append(each+suffix) for each in list_]
-    return temp
+    return [each+suffix for each in list_]
 
 def add_prefixes(list_, prefix):
     """Prepends 'prefix' to elements in 'list_obj'. Returns List."""
-    temp = []
-    [temp.append(prefix+each) for each in list_]
-    return temp
+    return [prefix+each for each in list_]
+
+def format_artist_link(href):
+    """Formats URL for the artist. Returns String."""
+#    link = href.get("href")
+#    return HOME_PAGE+"/"+link
+    return HOME_PAGE+"/"+href.get("href")

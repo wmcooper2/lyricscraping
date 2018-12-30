@@ -8,6 +8,8 @@ from pathlib import Path
 from constants import *
 
 dirs = [
+    SUPPORT,
+    RESULTS,
     CATEGORY_DIR,
     ARTIST_DIR,
     SONG_DIR,
@@ -17,15 +19,9 @@ dirs = [
 files = [
     CATEGORY_ERRORS,
     CATEGORY_FILE,
-    CATEGORY_STATS,
     ARTIST_ERRORS,
-    ARTIST_FILE,
-    ARTIST_STATS,
     SONG_ERRORS,
-    SONG_FILE,
-    SONG_STATS,
     LYRIC_ERRORS,
-    LYRIC_STATS
 ]
 
 def check(list_):
@@ -49,9 +45,16 @@ def dir_file_setup(list_):
         if not Path(x).exists(): setup(Path(x))
         else: print("exists: ", x)
 
-#Main
-if __name__ == "__main__":
-    print("--- DIRECTORY/FILE CHECK, START---")
+def directory_setup():
+    """Runs a check on the program's dirs and files. 
+        Creates dirs files that don't exist.
+        Returns None."""
+
+    print("--- DIRECTORY/FILE CHECK, STARTED ---")
     if check(dirs+files): print("All dirs and files are in place.")
     else: dir_file_setup(dirs+files)
-    print("--- DIRECTORY/FILE CHECK, FINISH---")
+    print("--- DIRECTORY/FILE CHECK, FINISHED ---")
+
+#Main
+if __name__ == "__main__":
+    directory_setup()
