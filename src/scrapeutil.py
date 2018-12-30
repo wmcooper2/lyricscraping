@@ -41,9 +41,9 @@ def persistent_request(link):
         return three_requests(link)
     return request
 
-def get_links(soup_obj, string):
-    """Gets hrefs containing 'string' from 'soup_obj'. Returns List."""
-    return soup_obj.find_all(href=re.compile(string))
+def get_links(soup, string):
+    """Gets hrefs containing 'string' from 'soup'. Returns List."""
+    return soup.find_all(href=re.compile(string))
 
 def get_hrefs(linklist):
     """Gets all href values from 'linklist'. Returns List."""
@@ -52,16 +52,28 @@ def get_hrefs(linklist):
 def get_soup(link, filter_=None):
     """Gets soup from a link. Returns BeautifulSoup object."""
     request = persistent_request(link)
-    return BeautifulSoup(request.content, "html.parser", parse_only=filter_)
-
-
-
+    return BeautifulSoup(request.content, "html.parser", 
+        parse_only=filter_)
 
 #test manually, for now
 def save(list_, location):
-    """Saves 'list_' to 'location' as txt file. Returns None."""
+    """Writes 'list_' to 'location' as txt file. Returns None."""
     with open(location, "w+") as f:
         for element in sorted(list_):
+            f.write(element)
+            f.write("\n")
+
+def save_append_line(string, location):
+    """Appends 'string' to location's text file. Returns None."""
+    with open(location, "a+") as f:
+        f.write(string)
+        f.write("\n")
+
+#test manually, for now
+def save_append(list_, location):
+    """Appends 'list_' to 'location' as txt file. Returns None."""
+    with open(location, "a+") as f:
+        for element in list_:
             f.write(element)
             f.write("\n")
 
@@ -90,13 +102,6 @@ def count_all_lines(file_):
     with open(file_, "r") as f:
         return len(f.readlines())
 
-def write_to_file(list_, file_):
-    """Writes 'list_' to 'file_'. Returns None."""
-    with open(file_, "w+") as f:
-        for el in list_:
-            f.write(el.strip())
-            f.write("\n")
-
 #test manually, for now
 def load_file_list(file_):
     """Loads 'file_'. Returns List."""
@@ -118,21 +123,47 @@ def buttontest():
     """Prints test line to terminal. Returns None."""
     print("button works")
 
-
-
-
-
-
-def add_suffixes(list_, suffix):
-    """Appends 'suffix' to elements in 'list_obj'. Returns List."""
-    return [each+suffix for each in list_]
-
-def add_prefixes(list_, prefix):
-    """Prepends 'prefix' to elements in 'list_obj'. Returns List."""
-    return [prefix+each for each in list_]
-
 def format_artist_link(href):
     """Formats URL for the artist. Returns String."""
-#    link = href.get("href")
-#    return HOME_PAGE+"/"+link
     return HOME_PAGE+"/"+href.get("href")
+
+def scrape_setup_artist(prev_fin, cur_err, cur_fin):
+    """Determines which links need to be scraped. 
+        needs;
+            - previous stage finished file
+            - current stage error file
+            - current stage finished file
+        Returns 2 Lists."""
+    todo = list(set(load_file_list(prev_fin)
+                    +load_file_list(cur_err)))
+    finished = load_file_list(cur_fin)
+    [todo.remove(el) for el in finished]
+    return todo, finished
+
+def scrape_setup_song(prev_stage_dir, cur_err, cur_fin):
+    """Determines which links need to be scraped. 
+        needs;
+            - current stage error file
+            - current stage finished file. 
+        Returns 2 Lists."""
+    prev_fin = []
+    for file_ in Path(prev_stage_dir).iterdir():
+        prev_fin += list(set(load_file_list(str(file_))))
+    todo = prev_fin + load_file_list(cur_err)
+    finished = load_file_list(cur_fin)
+    [todo.remove(el) for el in finished]
+    return todo, finished
+
+
+
+
+# works if Stop().stop_scraping is called, but not effective in tkinter for stopping a process/thread?
+class Stop():
+    stop = False
+    def __init__(self):
+        pass
+
+    def stop_scraping(self):
+        """Changes Stop class attribute to True. Returns None."""
+        Stop.stop = True
+        print("stopped")

@@ -18,10 +18,13 @@ dirs = [
 
 files = [
     CATEGORY_ERRORS,
-    CATEGORY_FILE,
+    CATEGORY_FIN,
     ARTIST_ERRORS,
+    ARTIST_FIN,
     SONG_ERRORS,
+    SONG_FIN,
     LYRIC_ERRORS,
+    LYRIC_TODO
 ]
 
 def check(list_):

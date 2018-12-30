@@ -17,7 +17,7 @@ def scrape():
     hrefs = get_hrefs(a_tags)
     suffixed = list(map(lambda x: x+"/99999", hrefs))
     prefixed = list(map(lambda x: HOME_PAGE+x, suffixed))
-    save(prefixed, CATEGORY_FILE)
+    save(prefixed, CATEGORY_FIN)
 
     print("--- CATEGORY SCRAPING FINISHED ---")
 

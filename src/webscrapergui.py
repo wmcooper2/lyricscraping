@@ -16,43 +16,25 @@ import scrapeartists as sa
 import scrapesongs as ss
 import scrapelyrics as sl
 
-#def redraw_category_total(total):
-#    """Redraws the category totals. Returns None."""
-#    c_total = ttk.Label(status_frame, 
-#        text=str(total))
-#    c_total.grid(column=2, row=1, pady=6, padx=6)
-#
-#def redraw_category_errors(total):
-#    """Redraws the category errors. Returns None."""
-#    c_errors = ttk.Label(status_frame, 
-#        text=str(total))
-#    c_errors.grid(column=1, row=1, pady=6, padx=6)
+def redraw_category_values():
+    """Redraws the category values. Returns None."""
+    c_total = ttk.Label(status_frame, 
+        text=str(count_unique_lines(CATEGORY_TODO)))
+    c_total.grid(column=2, row=1, pady=6, padx=6)
+    c_errors = ttk.Label(status_frame, 
+        text=str(count_unique_lines(CATEGORY_ERRORS)))
+    c_errors.grid(column=1, row=1, pady=6, padx=6)
 
-def redraw_artist_total(total):
-    """Redraws the artist totals. Returns None."""
+def redraw_artist_values():
+    """Redraws the artist values. Returns None."""
     a_total = ttk.Label(status_frame, 
+#        text=str(total))
         text=str(total))
     a_total.grid(column=2, row=2, pady=6, padx=6)
-
-def redraw_artist_errors(total):
-    """Redraws the artist errors. Returns None."""
     a_errors = ttk.Label(status_frame, 
+#        text=str(total))
         text=str(total))
     a_errors.grid(column=1, row=2, pady=6, padx=6)
-
-#def scrape_artists():
-#    """Scrapes artists from www.lyrics.com"""
-#    print("--- ARTIST SCRAPING STARTED ---")
-#    cat_links = load_file_list(CATEGORY_FILE)
-#    for link in cat_links:
-#        soup = get_soup(link)
-#        art_links = get_links(soup, "^artist")
-#        category = Path(link).parts[3]
-#        text_file = (ARTIST_DIR+category+"_"+"artistlinks.txt") 
-#        long_list = list(map(format_artist_link, art_links))
-#        save(long_list, text_file)
-#        print("saved", text_file)
-#    print("--- ARTIST SCRAPING FINISHED ---")
 
 #Main
 directory_setup()
@@ -85,13 +67,13 @@ c_btn.grid(column=0, row=1, pady=6, padx=6)
 a_btn = ttk.Button(status_frame, text="Artist", 
     command=sa.scrape)
 a_btn.grid(column=0, row=2, pady=6, padx=6)
+s_btn = ttk.Button(status_frame, text="Song", 
+    command=ss.scrape)
+s_btn.grid(column=0, row=3, pady=6, padx=6)
 #working on this one
 
 
 
-s_btn = ttk.Button(status_frame, text="Song", 
-    command=buttontest)
-s_btn.grid(column=0, row=3, pady=6, padx=6)
 l_btn = ttk.Button(status_frame, text="Lyric", 
     command=buttontest)
 l_btn.grid(column=0, row=4, pady=6, padx=6)
@@ -118,7 +100,7 @@ l_errors.grid(column=1, row=4, pady=6, padx=6)
 
 #totals column
 c_total = ttk.Label(status_frame, 
-    text=str(count_all_lines(CATEGORY_FILE)))
+    text=str(count_all_lines(CATEGORY_FIN)))
 c_total.grid(column=2, row=1, pady=6, padx=6)
 
 a_total = ttk.Label(status_frame, 
@@ -127,8 +109,7 @@ a_total.grid(column=2, row=2, pady=6, padx=6)
 
 #tempfix
 s_total = ttk.Label(status_frame, 
-#    text=str(count_songs2()))
-    text="na")
+    text=str(count_all_lines(SONG_FIN)))
 s_total.grid(column=2, row=3, pady=6, padx=6)
 
 #tempfix
@@ -138,29 +119,14 @@ l_total = ttk.Label(status_frame,
 l_total.grid(column=2, row=4, pady=6, padx=6)
 
 
-
-#rename/rework to "check" buttons?
-#recover buttons
-#c_recover = ttk.Button(status_frame, text="recover", 
-#    command=buttontest)
-#c_recover.grid(column=3, row=1, pady=6, padx=6)
-#a_recover = ttk.Button(status_frame, text="recover", 
-#    command=buttontest)
-#a_recover.grid(column=3, row=2, pady=6, padx=6)
-#s_recover = ttk.Button(status_frame, text="recover", 
-#    command=buttontest)
-#s_recover.grid(column=3, row=3, pady=6, padx=6)
-#l_recover = ttk.Button(status_frame, text="recover", 
-#    command=buttontest)
-#l_recover.grid(column=3, row=4, pady=6, padx=6)
-
 #bottom buttons
 button_frame = ttk.LabelFrame(main_box)
 button_frame.grid(column=0, row=2, sticky=tk.W, pady=6, padx=6)
 
 #temp fix
 stop_btn = ttk.Button(button_frame, text="Stop", 
-    command=buttontest)
+#    command=lambda: quit_(win))
+    command=Stop().stop_scraping)
 stop_btn.grid(column=0, row=0, sticky=tk.W, pady=6, padx=6)
 
 win.mainloop()
