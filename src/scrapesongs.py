@@ -58,6 +58,7 @@ def scrape():
         except:
             print("Error::", thing)
             save_append_line(thing, SONG_ERRORS)
+            pass
 
     #put a list set thing here, reload the files then...
     print("--- SONG SCRAPING, FINISHED ---")

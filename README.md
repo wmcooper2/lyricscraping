@@ -2,18 +2,18 @@
 Scrapes lyrics from 'www.lyrics.com'
 
 ### Operation
+(not finished)
 _The times taken to complete a stage as shown below are when the program is running on a macbook air. This machine limits the stress on the network by restricting webpage requests to the speed at which it can process which is about one link per second, roughly. So far, this has been the easy way to reduce (almost eliminate) errors due to overloading my home router._
 
-(not finished)
-* run `python3 webscrapergui.py` from `<programroot>/src/`, or `run` from `<programroot>/`
-* scraping is done in 4 stages;
+* Scraping is done in 4 stages;
   * category
   * artist
   * song
   * lyric
-* click on the stage buttons starting from the top.
-* when the value to the right of the button is populated, the stage is finished.
-  * (change to a different signal when finished)
+* Click on the stage buttons starting from the top when using the GUI.
+* Or, run manually with 
+  * `python3 webscrapergui.py` from `<programroot>/src/`
+  * or `run` from `<programroot>/`
 
 ### Steps
 

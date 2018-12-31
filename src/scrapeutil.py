@@ -134,8 +134,8 @@ def scrape_setup_artist(prev_fin, cur_err, cur_fin):
             - current stage error file
             - current stage finished file
         Returns 2 Lists."""
-    todo = list(set(load_file_list(prev_fin)
-                    +load_file_list(cur_err)))
+    todo = list(set(load_file_list(prev_fin)))
+#                    +load_file_list(cur_err))) #temp solution for artist scraping stage problem, freezes with this link or the one after it; https://www.lyrics.com/artist/100%-DJ/1851504
     finished = load_file_list(cur_fin)
     [todo.remove(el) for el in finished]
     return todo, finished
@@ -149,9 +149,14 @@ def scrape_setup_song(prev_stage_dir, cur_err, cur_fin):
     prev_fin = []
     for file_ in Path(prev_stage_dir).iterdir():
         prev_fin += list(set(load_file_list(str(file_))))
-    todo = prev_fin + load_file_list(cur_err)
+    todo = prev_fin #+ load_file_list(cur_err)
     finished = load_file_list(cur_fin)
-    [todo.remove(el) for el in finished]
+#    [todo.remove(el) for el in finished]
+    for el in finished:
+        try:
+            todo.remove(el)
+        except:
+            pass
     return todo, finished
 
 
