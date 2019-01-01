@@ -33,12 +33,6 @@ def get_lyrics(soup):
     lyric_body = soup.find(id="lyric-body-text")
     return lyric_body.get_text()
 
-#def save_lyrics(artist, song_name, lyrics):
-#    """Writes lyrics to the artist's folder. Returns None."""
-#    file_name = RESULTS+artist+"_"+song_name+".txt"
-#    with open(file_name, "w+") as file_:
-#        file_.write(str(lyrics))
-
 def remove_slash(string):
     """Removes the forward slash. Returns String."""
     temp = []
@@ -53,50 +47,58 @@ def file_gen(file_):
 
 def format_file_name(artist, song):
     """Makes the file name for the lyrics file. Returns String."""
-    return artist+"_"+song_name+".txt"
+    return artist+"_"+song+".txt"
 
-
-
-
+def show_progress(progress, total):
+    """Draws lyric scraping progress to the terminal. Returns None."""
+    print("{0} / {1}".format(str(progress), str(total)))
 
 #Main
-def scrape(link):
+def scrape():
     """A single scraping attempt of 'link'. Returns None."""
     print("--- LYRIC SCRAPING; STARTED ---")
+    print("Loading unfinished work...")
+    todo, finished = scrape_setup(SONG_FIN, LYRIC_ERRORS, LYRIC_FIN)
+    fin_len        = len(finished)
+    todo_len       = len(todo)
+    print("finished::", fin_len)
+    print("todo    ::", todo_len)
 
-    #rename scrape_setup_artist 
-    todo, finished = scrape_setup_artist(SONG_FIN, LYRIC_ERRORS, LYRIC_FIN)
-    print("finished::", len(finished))
-    print("todo    ::", len(todo))
-
-#    gen = file_gen(SONG_FILE)
-#    for link in gen:
-
-    counter = 0
-    for link in LYRIC_TODO:
-        counter += 1
+    completed = 0
+    for link in load_file_list(LYRIC_TODO):
+        completed += 1
         try:
-            soup    = get_soup(link)
+            soup        = get_soup(link)
+            song        = get_song(soup)
+            artist      = get_artist(soup)
+            file_name   = format_file_name(artist, song)
+            
+            #final clean up of lyrics
             lyrics  = get_lyrics(soup)
-            song    = get_song(soup)
-            artist  = get_artist(soup)
-            lyric_file = format_file_name(artist, song)
-            save(lyrics, RESULTS+lyric_file)
+            lyrics  = list(lyrics.split("\n"))
+            lyrics  = list(map(lambda x: x.strip(), lyrics))
             save_append_line(link, LYRIC_FIN)
-            if len(todo) % 100 == 0:
-                total = len(todo) + len(finished)
-                progress = len(finished) + counter
-                print("Progress::", str(round(progress/total, 4), "%")
 
-            #get the first letter of the artist name
-            #make a dir with the first letter of the artist name
-                #if the first letter is not a letter (a symbol):
-                    #save the lyrics to the symbol dir
-                #else:
-                    #save to the dir that has the same first letter
+            if completed % 10 == 0:
+                progress = fin_len  + completed
+                #the math feels wrong
+                total    = todo_len + fin_len
+                show_progress(progress, total)
+
+            letter = artist[0]
+            save_path = LYRIC_DIR+letter+"/"
+            ensure_exists(save_path)
+
+            if letter in UPPERS:
+                save_lyrics(lyrics, save_path+file_name)
+            else:
+                save_lyrics(lyrics, save_path+file_name)
         except:
             print("Error::", link)
-            save_append_line(error, LYRIC_ERRORS)
+            save_append_line(link, LYRIC_ERRORS)
+        #testing break
+#        if completed == 3:
+#            break
     print("--- LYRIC SCRAPING; FINISHED ---")
 
 if __name__ == "__main__":

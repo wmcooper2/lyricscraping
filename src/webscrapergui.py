@@ -70,12 +70,8 @@ a_btn.grid(column=0, row=2, pady=6, padx=6)
 s_btn = ttk.Button(status_frame, text="Song", 
     command=ss.scrape)
 s_btn.grid(column=0, row=3, pady=6, padx=6)
-#working on this one
-
-
-
 l_btn = ttk.Button(status_frame, text="Lyric", 
-    command=buttontest)
+    command=sl.scrape)
 l_btn.grid(column=0, row=4, pady=6, padx=6)
 
 #errors column
@@ -115,18 +111,19 @@ s_total.grid(column=2, row=3, pady=6, padx=6)
 #tempfix
 l_total = ttk.Label(status_frame, 
 #    text=str(count_files(LYRIC_DIR)))
-    text="na")
+    text=str(count_files(ALLLYRICFILES)))
+#    text="na")
 l_total.grid(column=2, row=4, pady=6, padx=6)
 
 
 #bottom buttons
-button_frame = ttk.LabelFrame(main_box)
-button_frame.grid(column=0, row=2, sticky=tk.W, pady=6, padx=6)
+#button_frame = ttk.LabelFrame(main_box)
+#button_frame.grid(column=0, row=2, sticky=tk.W, pady=6, padx=6)
 
 #temp fix
-stop_btn = ttk.Button(button_frame, text="Stop", 
+#stop_btn = ttk.Button(button_frame, text="Stop", 
 #    command=lambda: quit_(win))
-    command=Stop().stop_scraping)
-stop_btn.grid(column=0, row=0, sticky=tk.W, pady=6, padx=6)
+#    command=Stop().stop_scraping)
+#stop_btn.grid(column=0, row=0, sticky=tk.W, pady=6, padx=6)
 
 win.mainloop()

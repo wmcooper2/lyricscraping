@@ -19,7 +19,7 @@ def scrape():
     """Main scraping function. Returns None."""
     print("--- ARTIST SCRAPING STARTED ---")
     errors = []
-    todo, finished = scrape_setup_artist(CATEGORY_FIN, ARTIST_ERRORS, ARTIST_FIN)
+    todo, finished = scrape_setup(CATEGORY_FIN, ARTIST_ERRORS, ARTIST_FIN)
     print("finished")
     pprint(finished)
     print("todo")

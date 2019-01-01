@@ -55,11 +55,23 @@ def get_soup(link, filter_=None):
     return BeautifulSoup(request.content, "html.parser", 
         parse_only=filter_)
 
+def ensure_exists(string):
+    """Makes 'string' dir if doesn't exist. Returns None."""
+    if not Path(string).exists():
+        Path(string).mkdir()
+
 #test manually, for now
 def save(list_, location):
     """Writes 'list_' to 'location' as txt file. Returns None."""
     with open(location, "w+") as f:
         for element in sorted(list_):
+            f.write(element)
+            f.write("\n")
+
+def save_lyrics(list_, location):
+    """Writes 'list_' to 'location' as txt file. Returns None."""
+    with open(location, "w+") as f:
+        for element in list_:
             f.write(element)
             f.write("\n")
 
@@ -107,8 +119,9 @@ def load_file_list(file_):
     """Loads 'file_'. Returns List."""
     temp = []
     with open(file_, "r") as f:
-        for line in f.readlines():
-            temp.append(line.strip())
+        [temp.append(line.strip()) for line in f.readlines()]
+#        for line in f.readlines():
+#            temp.append(line.strip())
     return temp
 
 def count_files(dir_):
@@ -127,7 +140,7 @@ def format_artist_link(href):
     """Formats URL for the artist. Returns String."""
     return HOME_PAGE+"/"+href.get("href")
 
-def scrape_setup_artist(prev_fin, cur_err, cur_fin):
+def scrape_setup(prev_fin, cur_err, cur_fin):
     """Determines which links need to be scraped. 
         needs;
             - previous stage finished file
@@ -137,7 +150,12 @@ def scrape_setup_artist(prev_fin, cur_err, cur_fin):
     todo = list(set(load_file_list(prev_fin)))
 #                    +load_file_list(cur_err))) #temp solution for artist scraping stage problem, freezes with this link or the one after it; https://www.lyrics.com/artist/100%-DJ/1851504
     finished = load_file_list(cur_fin)
-    [todo.remove(el) for el in finished]
+#    [todo.remove(el) for el in finished]
+    for el in finished:
+        try:
+            todo.remove(el)
+        except:
+            pass
     return todo, finished
 
 def scrape_setup_song(prev_stage_dir, cur_err, cur_fin):
