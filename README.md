@@ -22,9 +22,9 @@ _The times taken to complete a stage as shown below are when the program is runn
 2. Click "Artist" button
   * may take 3 minutes
 3. Click "Song" button
-  * may take 40 hours
+  * may take 1 week
 4. Click "Lyric" button
-  * may take 4 months
+  * may take 1 month
 
 ### Notes
 * You may notice that the sum of the song errors and song total don't equal the "Artist" stage total.
