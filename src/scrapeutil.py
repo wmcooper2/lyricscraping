@@ -1,6 +1,5 @@
 """Utility module Lyric Scraper program."""
 #stand lib
-#from glob import glob
 import json
 from pathlib import Path
 import re
@@ -17,9 +16,8 @@ from constants import *
 
 filter_ = SoupStrainer("a")
 
-def simple_request(link):
-    """Makes only one request attempt. Returns Request object."""
-    return requests.get(link)
+buttontest = lambda: print("Button works")
+simple_request = lambda l: requests.get(l)
     
 def three_requests(link):
     """Makes up to 3 request attempts. Returns Request object."""
@@ -60,13 +58,11 @@ def ensure_exists(string):
     if not Path(string).exists():
         Path(string).mkdir()
 
-#test manually, for now
 def save(list_, location):
     """Writes 'list_' to 'location' as txt file. Returns None."""
     with open(location, "w+") as f:
         for element in sorted(list_):
-            f.write(element)
-            f.write("\n")
+            f.write(element+"\n")
 
 def save_lyrics(list_, location):
     """Writes 'list_' to 'location' as txt file. Returns None."""
@@ -77,32 +73,26 @@ def save_lyrics(list_, location):
 def save_append_line(string, location):
     """Appends 'string' to location's text file. Returns None."""
     with open(location, "a+") as f:
-        f.write(string)
-        f.write("\n")
+        f.write(string+"\n")
 
-#test manually, for now
 def save_append(list_, location):
     """Appends 'list_' to 'location' as txt file. Returns None."""
     with open(location, "a+") as f:
         for element in list_:
-            f.write(element)
-            f.write("\n")
+            f.write(element+"\n")
 
-#test manually, for now
 def save_json(json_obj, file_name):
     """Saves 'json_obj' to 'file_name'. Returns None."""
     dumping = json.dumps(json_obj, sort_keys=True, indent=4)
     with open(file_name, "a+") as file_obj:
         file_obj.write(dumping)
 
-#test manually, for now
 def load_json(file_path):
     """Loads a json file. Returns Json object."""
     with open(file_path) as file_obj:
         artist_list = json.loads(file_obj.read())
     return artist_list 
 
-#def lines_in_file(file_):
 def count_unique_lines(file_):
     """Counts unique lines in 'file_'. Returns Integer."""
     with open(file_, "r") as f:
@@ -113,14 +103,11 @@ def count_all_lines(file_):
     with open(file_, "r") as f:
         return len(f.readlines())
 
-#test manually, for now
 def load_file_list(file_):
     """Loads 'file_'. Returns List."""
     temp = []
     with open(file_, "r") as f:
         [temp.append(line.strip()) for line in f.readlines()]
-#        for line in f.readlines():
-#            temp.append(line.strip())
     return temp
 
 def count_files(dir_):
@@ -130,16 +117,10 @@ def count_files(dir_):
     return sp.run(cmd, encoding="utf-8", shell=True,
         stdout=sp.PIPE, stderr=sp.PIPE).stdout.strip()
 
-#test manually, for now
-def buttontest():
-    """Prints test line to terminal. Returns None."""
-    print("button works")
-
 def format_artist_link(href):
     """Formats URL for the artist. Returns String."""
     return HOME_PAGE+"/"+href.get("href")
 
-#def scrape_setup(prev_fin, cur_err, cur_fin):
 def scrape_setup(cur_todo, cur_fin):
     """Determines which links need to be scraped. 
         needs;
@@ -147,9 +128,7 @@ def scrape_setup(cur_todo, cur_fin):
             - current stage finished file
         Returns 2 Lists."""
     todo = list(set(load_file_list(cur_todo)))
-#                    +load_file_list(cur_err))) #temp solution for artist scraping stage problem, freezes with this link or the one after it; https://www.lyrics.com/artist/100%-DJ/1851504
     finished = load_file_list(cur_fin)
-#    [todo.remove(el) for el in finished]
     for el in finished:
         try:
             todo.remove(el)
@@ -180,9 +159,6 @@ def scrape_setup_song(prev_stage_dir, cur_fin):
 #            pass
 #    return todo, finished
     return list(prev_fin.difference(finished)), list(finished)
-
-
-
 
 # works if Stop().stop_scraping is called, but not effective in tkinter for stopping a process/thread?
 class Stop():

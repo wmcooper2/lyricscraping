@@ -17,6 +17,7 @@ from constants import *
 from scrapeutil import *
 
 filter_ = SoupStrainer("a")
+format_file_name = lambda a, s: a+"_"+s+".txt"
 
 def get_song(soup):
     """Extracts the song's name. Returns String."""
@@ -45,9 +46,9 @@ def file_gen(file_):
         for link in song_list.readlines():
             yield link.strip()
 
-def format_file_name(artist, song):
-    """Makes the file name for the lyrics file. Returns String."""
-    return artist+"_"+song+".txt"
+#def format_file_name(artist, song):
+#    """Makes the file name for the lyrics file. Returns String."""
+#    return artist+"_"+song+".txt"
 
 def show_progress(progress, total):
     """Draws lyric scraping progress to the terminal. Returns None."""
@@ -62,8 +63,8 @@ def scrape():
     todo, finished = scrape_setup(LYRIC_TODO, LYRIC_FIN)
     fin_len        = len(finished)
     todo_len       = len(todo)
-    print("finished::", fin_len)
-    print("todo    ::", todo_len)
+    print("Finished:", fin_len)
+    print("To do   :", todo_len)
 
     completed = 0
 #    for link in load_file_list(LYRIC_TODO):
@@ -91,7 +92,7 @@ def scrape():
                 symbol_dir = LYRIC_DIR+"symbollyrics/"
                 save_lyrics(lyrics, symbol_dir+file_name)
         except:
-            print("Error::", link)
+            print("Error:", link)
             save_append_line(link, LYRIC_ERRORS)
 
         #user feedback
@@ -101,10 +102,9 @@ def scrape():
             total    = todo_len + fin_len
             show_progress(progress, total)
 
-#        #testing break
-#        if completed == 3:
-#            break
-    print("--- LYRIC SCRAPING; FINISHED ---")
+        if DEBUG:
+            if completed >= 3:
+                break
 
 if __name__ == "__main__":
     scrape()

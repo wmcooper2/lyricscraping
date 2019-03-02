@@ -45,8 +45,8 @@ def scrape():
     print("--- SONG SCRAPING, START ---")
 #    todo, finished = scrape_setup_song(ARTIST_DIR, SONG_ERRORS, SONG_FIN)
     todo, finished = scrape_setup_song(ARTIST_DIR, SONG_FIN)
-    print("finished::", len(finished))
-    print("todo    ::", len(todo))
+    print("Finished:", len(finished))
+    print("To do   :", len(todo))
 
     errors = load_file_list(SONG_ERRORS)
     for thing in sorted(todo):
@@ -57,9 +57,9 @@ def scrape():
             links = list(map(lambda x: unquote(HOME_PAGE+x), hrefs))
             save_append(links, LYRIC_TODO)
             save_append_line(thing, SONG_FIN)
-            print("Saved::", thing)
+            print("Saved:", thing)
         except:
-            print("Error::", thing)
+            print("Error:", thing)
             errors.append(thing)
 
     save(list(set(errors)), SONG_ERRORS)

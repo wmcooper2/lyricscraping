@@ -8,7 +8,6 @@ from scrapeutil import *
 def test_simple_request():
     assert simple_request(HOME_PAGE).status_code == 200
 
-# how to test?
 #def test_three_requests()
 
 def test_persistent_request():

@@ -20,9 +20,9 @@ def scrape():
     print("--- ARTIST SCRAPING STARTED ---")
     errors = []
     todo, finished = scrape_setup(CATEGORY_FIN, ARTIST_ERRORS, ARTIST_FIN)
-    print("finished")
+    print("Finished")
     pprint(finished)
-    print("todo")
+    print("To do")
     pprint(sorted(todo))
     for cat in sorted(todo):
         try:
@@ -32,11 +32,11 @@ def scrape():
             category = Path(cat).parts[3]
             text_file = (ARTIST_DIR+category+"_"+"artistlinks.txt") 
             save(art_links, text_file)
-            print("saved", text_file)
+            print("Saved:", text_file)
             finished.append(cat)
         except:
             errors.append(cat)
-            print("Error::", cat)
+            print("Error:", cat)
     save(errors, ARTIST_ERRORS)
     save(finished, ARTIST_FIN)
     print("--- ARTIST SCRAPING FINISHED ---")
