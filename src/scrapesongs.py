@@ -43,9 +43,12 @@ def format_song_name(link):
 def scrape():
     """Main scraping function. Returns None."""
     print("--- SONG SCRAPING, START ---")
-    todo, finished = scrape_setup_song(ARTIST_DIR, SONG_ERRORS, SONG_FIN)
+#    todo, finished = scrape_setup_song(ARTIST_DIR, SONG_ERRORS, SONG_FIN)
+    todo, finished = scrape_setup_song(ARTIST_DIR, SONG_FIN)
     print("finished::", len(finished))
     print("todo    ::", len(todo))
+
+    errors = load_file_list(SONG_ERRORS)
     for thing in sorted(todo):
         try:
             soup = get_soup(thing)
@@ -57,9 +60,9 @@ def scrape():
             print("Saved::", thing)
         except:
             print("Error::", thing)
-            save_append_line(thing, SONG_ERRORS)
-            pass
+            errors.append(thing)
 
+    save(list(set(errors)), SONG_ERRORS)
     #put a list set thing here, reload the files then...
     print("--- SONG SCRAPING, FINISHED ---")
 

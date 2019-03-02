@@ -1,6 +1,6 @@
 """Utility module Lyric Scraper program."""
 #stand lib
-from glob import glob
+#from glob import glob
 import json
 from pathlib import Path
 import re
@@ -72,8 +72,7 @@ def save_lyrics(list_, location):
     """Writes 'list_' to 'location' as txt file. Returns None."""
     with open(location, "w+") as f:
         for element in list_:
-            f.write(element)
-            f.write("\n")
+            f.write(element+"\n")
 
 def save_append_line(string, location):
     """Appends 'string' to location's text file. Returns None."""
@@ -140,14 +139,14 @@ def format_artist_link(href):
     """Formats URL for the artist. Returns String."""
     return HOME_PAGE+"/"+href.get("href")
 
-def scrape_setup(prev_fin, cur_err, cur_fin):
+#def scrape_setup(prev_fin, cur_err, cur_fin):
+def scrape_setup(cur_todo, cur_fin):
     """Determines which links need to be scraped. 
         needs;
-            - previous stage finished file
-            - current stage error file
+            - current todo file
             - current stage finished file
         Returns 2 Lists."""
-    todo = list(set(load_file_list(prev_fin)))
+    todo = list(set(load_file_list(cur_todo)))
 #                    +load_file_list(cur_err))) #temp solution for artist scraping stage problem, freezes with this link or the one after it; https://www.lyrics.com/artist/100%-DJ/1851504
     finished = load_file_list(cur_fin)
 #    [todo.remove(el) for el in finished]
@@ -158,7 +157,8 @@ def scrape_setup(prev_fin, cur_err, cur_fin):
             pass
     return todo, finished
 
-def scrape_setup_song(prev_stage_dir, cur_err, cur_fin):
+#def scrape_setup_song(prev_stage_dir, cur_err, cur_fin):
+def scrape_setup_song(prev_stage_dir, cur_fin):
     """Determines which links need to be scraped. 
         needs;
             - current stage error file
@@ -166,16 +166,20 @@ def scrape_setup_song(prev_stage_dir, cur_err, cur_fin):
         Returns 2 Lists."""
     prev_fin = []
     for file_ in Path(prev_stage_dir).iterdir():
-        prev_fin += list(set(load_file_list(str(file_))))
-    todo = prev_fin #+ load_file_list(cur_err)
-    finished = load_file_list(cur_fin)
+#        prev_fin += list(set(load_file_list(str(file_))))
+        prev_fin += load_file_list(str(file_))
+#    todo = prev_fin #+ load_file_list(cur_err)
+    prev_fin = set(prev_fin)
+    finished = set(load_file_list(cur_fin))
 #    [todo.remove(el) for el in finished]
-    for el in finished:
-        try:
-            todo.remove(el)
-        except:
-            pass
-    return todo, finished
+
+#    for el in finished:
+#        try:
+#            todo.remove(el)
+#        except:
+#            pass
+#    return todo, finished
+    return list(prev_fin.difference(finished)), list(finished)
 
 
 

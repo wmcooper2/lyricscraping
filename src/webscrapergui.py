@@ -28,11 +28,9 @@ def redraw_category_values():
 def redraw_artist_values():
     """Redraws the artist values. Returns None."""
     a_total = ttk.Label(status_frame, 
-#        text=str(total))
         text=str(total))
     a_total.grid(column=2, row=2, pady=6, padx=6)
     a_errors = ttk.Label(status_frame, 
-#        text=str(total))
         text=str(total))
     a_errors.grid(column=1, row=2, pady=6, padx=6)
 
@@ -91,9 +89,6 @@ l_errors = ttk.Label(status_frame,
     text=str(count_all_lines(LYRIC_ERRORS)))
 l_errors.grid(column=1, row=4, pady=6, padx=6)
 
-
-
-
 #totals column
 c_total = ttk.Label(status_frame, 
     text=str(count_all_lines(CATEGORY_FIN)))
@@ -110,20 +105,5 @@ s_total.grid(column=2, row=3, pady=6, padx=6)
 
 #tempfix
 l_total = ttk.Label(status_frame, 
-#    text=str(count_files(LYRIC_DIR)))
     text=str(count_files(ALLLYRICFILES)))
-#    text="na")
 l_total.grid(column=2, row=4, pady=6, padx=6)
-
-
-#bottom buttons
-#button_frame = ttk.LabelFrame(main_box)
-#button_frame.grid(column=0, row=2, sticky=tk.W, pady=6, padx=6)
-
-#temp fix
-#stop_btn = ttk.Button(button_frame, text="Stop", 
-#    command=lambda: quit_(win))
-#    command=Stop().stop_scraping)
-#stop_btn.grid(column=0, row=0, sticky=tk.W, pady=6, padx=6)
-
-win.mainloop()

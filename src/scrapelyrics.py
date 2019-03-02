@@ -58,14 +58,16 @@ def scrape():
     """A single scraping attempt of 'link'. Returns None."""
     print("--- LYRIC SCRAPING; STARTED ---")
     print("Loading unfinished work...")
-    todo, finished = scrape_setup(SONG_FIN, LYRIC_ERRORS, LYRIC_FIN)
+#    todo, finished = scrape_setup(SONG_FIN, LYRIC_ERRORS, LYRIC_FIN)
+    todo, finished = scrape_setup(LYRIC_TODO, LYRIC_FIN)
     fin_len        = len(finished)
     todo_len       = len(todo)
     print("finished::", fin_len)
     print("todo    ::", todo_len)
 
     completed = 0
-    for link in load_file_list(LYRIC_TODO):
+#    for link in load_file_list(LYRIC_TODO):
+    for link in sorted(todo):
         completed += 1
         try:
             soup        = get_soup(link)
@@ -79,24 +81,27 @@ def scrape():
             lyrics  = list(map(lambda x: x.strip(), lyrics))
             save_append_line(link, LYRIC_FIN)
 
-            if completed % 10 == 0:
-                progress = fin_len  + completed
-                #the math feels wrong
-                total    = todo_len + fin_len
-                show_progress(progress, total)
-
             letter = artist[0]
-            save_path = LYRIC_DIR+letter+"/"
+            save_path = LYRIC_DIR+letter+"lyrics/"
             ensure_exists(save_path)
 
             if letter in UPPERS:
                 save_lyrics(lyrics, save_path+file_name)
             else:
-                save_lyrics(lyrics, save_path+file_name)
+                symbol_dir = LYRIC_DIR+"symbollyrics/"
+                save_lyrics(lyrics, symbol_dir+file_name)
         except:
             print("Error::", link)
             save_append_line(link, LYRIC_ERRORS)
-        #testing break
+
+        #user feedback
+        if completed % 10 == 0:
+            progress = fin_len  + completed
+            #the math feels wrong
+            total    = todo_len + fin_len
+            show_progress(progress, total)
+
+#        #testing break
 #        if completed == 3:
 #            break
     print("--- LYRIC SCRAPING; FINISHED ---")
