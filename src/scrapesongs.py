@@ -1,37 +1,49 @@
+#!/usr/bin/env python3.7
+# scrapesongs.py
 """Scrape song links from www.lyrics.com"""
-#stand lib
+# stand lib
 from pathlib import Path
 from pprint import pprint
 from urllib.parse import unquote
 
-#custom
-from constants import *
-from scrapeutil import *
+# custom
+from constants import ARTIST_DIR
+from constants import SONG_FIN
+from constants import SONG_ERRORS
+from constants import LYRIC_TODO
+from constants import HOME_PAGE
+from scrapeutil import get_soup
+from scrapeutil import get_links
+from scrapeutil import save_append_line
 
-def load_categories(dir_):
-    """Loads the file names for the lists of artists. Returns List."""
+
+def load_categories(paths: str) -> List[str]:
+    """Loads artists file names. Returns List."""
     temp = []
-    for file_ in Path(dir_).iterdir():
+    for file_ in Path(paths).iterdir():
         temp.append(str(file_))
     temp.sort() 
     return temp
 
-def remove_punctuation(song_name):
-    """Removes punctuation from song_name. Returns String."""
+
+def remove_punctuation(name: str) -> str:
+    """Removes punctuation from song. Returns String."""
     no_punct = []
-    for character in song_name:
+    for character in name:
         if character not in PUNCTUATION:
             no_punct.append(character)
     return ''.join(no_punct)
 
-def format_artist_name(name):
+
+def format_artist_name(name: str) -> str:
     """Formats the artist's name. Returns String."""
     artist = unquote(name)
     artist = artist.replace("+", " ")
     artist = artist.replace("/", " ")
     return artist
 
-def format_song_name(link):
+
+def format_song_name(link: Any) -> str:
     """Formats the song's name. Returns String."""
     song = unquote(Path(link.get("href")).parts[4])
     song = song.replace("+", " ")
@@ -40,10 +52,9 @@ def format_song_name(link):
 
 
 #Main
-def scrape():
+def scrape() -> None:
     """Main scraping function. Returns None."""
     print("--- SONG SCRAPING, START ---")
-#    todo, finished = scrape_setup_song(ARTIST_DIR, SONG_ERRORS, SONG_FIN)
     todo, finished = scrape_setup_song(ARTIST_DIR, SONG_FIN)
     print("Finished:", len(finished))
     print("To do   :", len(todo))
@@ -57,14 +68,11 @@ def scrape():
             links = list(map(lambda x: unquote(HOME_PAGE+x), hrefs))
             save_append(links, LYRIC_TODO)
             save_append_line(thing, SONG_FIN)
-            print("Saved:", thing)
         except:
-            print("Error:", thing)
             errors.append(thing)
 
     save(list(set(errors)), SONG_ERRORS)
-    #put a list set thing here, reload the files then...
     print("--- SONG SCRAPING, FINISHED ---")
 
-if __name__ == "__main__":
-    scrape() 
+# if __name__ == "__main__":
+#     scrape() 

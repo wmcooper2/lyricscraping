@@ -1,12 +1,17 @@
+#!/usr/bin/env python3.7
+# scrapecategories.py
 """Scrapes category links."""
-#stand lib
+# stand lib
 from pathlib import Path
 
-#custom
-from constants import *
-from scrapeutil import *
+# custom
+from constants import CATEGORY_FIN
+from constants import HOME_PAGE
+from scrapeutil import get_soup
+from scrapeutil import get_links
+from scrapeutil import save
 
-def scrape():
+def scrape() -> None:
     print("--- CATEGORY SCRAPING STARTED ---")
     print("Scraping from:", HOME_PAGE)
     soup = get_soup(HOME_PAGE)
@@ -18,5 +23,5 @@ def scrape():
     save(prefixed, CATEGORY_FIN)
     print("--- CATEGORY SCRAPING FINISHED ---")
 
-if __name__ == "__main__":
-    scrape()
+# if __name__ == "__main__":
+#     scrape()
