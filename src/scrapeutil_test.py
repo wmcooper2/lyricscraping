@@ -1,13 +1,13 @@
 #!/usr/bin/env python3.7
 # scrapeutil_test.py
 """Test module."""
+
 # 3rd party
 import pytest
 
 # custom
 from constants import *
-from scrapeutil import get_soup
-from scrapeutil import get_links
+from scrapeutil import *
 
 def test_simple_request():
     assert simple_request(HOME_PAGE).status_code == 200

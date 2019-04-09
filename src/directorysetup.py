@@ -3,6 +3,7 @@
 """Directory setup for Lyric program.
     Creates files and directories in '<programroot>/src/'.
 """
+
 # stand lib
 from pathlib import Path
 
@@ -39,9 +40,9 @@ def directory_setup(paths: List[str]) -> None:
 def setup(path: str) -> None:
     """Creates 'path'. Returns None."""
     if str(path).endswith("txt"):
-        path.touch()
+        Path(path).touch()
     else:
-        path.mkdir()
+        Path(path).mkdir()
     return None
 
 

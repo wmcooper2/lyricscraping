@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.7
 # scrapesongs.py
-"""Scrape song links from www.lyrics.com"""
+"""Scrapes song links. Step 3."""
+
 # stand lib
 from pathlib import Path
 from pprint import pprint
@@ -8,50 +9,24 @@ from urllib.parse import unquote
 
 # custom
 from constants import ARTIST_DIR
-from constants import SONG_FIN
-from constants import SONG_ERRORS
-from constants import LYRIC_TODO
 from constants import HOME_PAGE
-from scrapeutil import get_soup
+from constants import LYRIC_TODO
+from constants import SONG_ERRORS
+from constants import SONG_FIN
+from scrapeutil import format_artist_name
+from scrapeutil import format_song_name
+from scrapeutil import get_hrefs
 from scrapeutil import get_links
+from scrapeutil import get_soup
+from scrapeutil import load_categories
+from scrapeutil import load_file_list
+from scrapeutil import remove_punctuation
+from scrapeutil import save
+from scrapeutil import save_append
 from scrapeutil import save_append_line
+from scrapeutil import scrape_setup_song
 
 
-def load_categories(paths: str) -> List[str]:
-    """Loads artists file names. Returns List."""
-    temp = []
-    for file_ in Path(paths).iterdir():
-        temp.append(str(file_))
-    temp.sort() 
-    return temp
-
-
-def remove_punctuation(name: str) -> str:
-    """Removes punctuation from song. Returns String."""
-    no_punct = []
-    for character in name:
-        if character not in PUNCTUATION:
-            no_punct.append(character)
-    return ''.join(no_punct)
-
-
-def format_artist_name(name: str) -> str:
-    """Formats the artist's name. Returns String."""
-    artist = unquote(name)
-    artist = artist.replace("+", " ")
-    artist = artist.replace("/", " ")
-    return artist
-
-
-def format_song_name(link: Any) -> str:
-    """Formats the song's name. Returns String."""
-    song = unquote(Path(link.get("href")).parts[4])
-    song = song.replace("+", " ")
-    song = song.replace("-", " ")
-    return song
-
-
-#Main
 def scrape() -> None:
     """Main scraping function. Returns None."""
     print("--- SONG SCRAPING, START ---")
@@ -74,5 +49,5 @@ def scrape() -> None:
     save(list(set(errors)), SONG_ERRORS)
     print("--- SONG SCRAPING, FINISHED ---")
 
-# if __name__ == "__main__":
-#     scrape() 
+if __name__ == "__main__":
+    scrape() 
