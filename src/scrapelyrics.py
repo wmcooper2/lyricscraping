@@ -33,6 +33,8 @@ from scrapeutil import save_append_line
 from scrapeutil import save_lyrics
 from scrapeutil import scrape_setup
 
+# import pdb
+
 def scrape() -> None:
     """A single scraping attempt of 'link'. Returns None."""
     print("--- LYRIC SCRAPING; STARTED ---")
@@ -64,13 +66,15 @@ def scrape() -> None:
             else:
                 symbol_dir = LYRIC_DIR+"symbollyrics/"
                 save_lyrics(lyrics, symbol_dir+file_name)
-        except:
+        except AttributeError:
             save_append_line(link, LYRIC_ERRORS)
+        except KeyboardInterrupt:
+            print("Stopped manually.")
+            quit()
         completed += 1
-        progress_bar(completed, todo_len)
-        if DEBUG:
-            if completed >= 3:
-                break
+        print('\r%s %s' % (completed, "lyrics"), end='\r')
+    return None
+
 
 if __name__ == "__main__":
     scrape()

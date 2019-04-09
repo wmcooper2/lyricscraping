@@ -45,6 +45,17 @@ def count_artists(dir_: Text) -> int:
     return total
 
 
+def count_lines(file_: Text) -> int:
+    """Counts lines in 'file_'. Returns Integer."""
+    count = 0
+    with open(file_, "r") as f:
+        for line in f.readlines():
+            count += 1
+            print('\r%s %s' % (count, "lines"), end='\r')
+    print()
+    return count
+
+
 def count_unique_lines(file_: Text) -> int:
     """Counts unique lines in 'file_'. Returns Integer."""
     with open(file_, "r") as f:
@@ -138,11 +149,14 @@ def load_categories(paths: Text) -> List[Text]:
 
 def load_file_list(file_: Text) -> List[Text]:
     """Loads 'file_'. Returns List."""
-#     temp = []
+    temp = []
+    total = count_lines(file_)
+    loaded = 0
     with open(file_, "r") as f:
-#         [temp.append(line.strip()) for line in f.readlines()]
-#     return temp
-        return [line.strip() for line in f.readlines()]
+        for line in f.readlines():
+            temp.append(line.strip())
+            loaded += 1
+    return temp
 
 
 def load_json(file_path: Text) -> Any:
@@ -163,7 +177,7 @@ def persistent_request(link: Text) -> Any:
 def progress_bar(iteration: int,
                  total: int,
                  prefix: Text = 'Todo:',
-                 suffix: Text = '%',
+                 suffix: Text = '',
                  decimals: int = 1,
                  length: int = 100,
                  fill: Text = '█') -> None:
@@ -178,11 +192,10 @@ def progress_bar(iteration: int,
         length      - Optional  : character length of bar (Int)
         fill        - Optional  : bar fill character (Str)
     """
-    percent = ("{0:." + str(decimals) +
-               "f}").format(100 * (iteration / float(total)))
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
-    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end = '\r')
+    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end='\r')
     # Print New Line on Complete
     if iteration is total: 
         print()
@@ -253,14 +266,24 @@ def scrape_setup(cur_todo: Text,
             - current todo file
             - current stage finished file
         Returns 2 Lists."""
-    todo = list(set(load_file_list(cur_todo)))
-    finished = load_file_list(cur_fin)
-    for el in finished:
-        try:
-            todo.remove(el)
-        except:
-            pass
-    return (todo, finished)
+    todo = set(load_file_list(cur_todo))
+    finished = set(load_file_list(cur_fin))
+    todo_len = len(todo)
+    finished_len = len(finished)
+    completed = 0
+    diff = todo.difference(finished)
+    print("Unique todos:", len(diff))
+    
+
+#     for el in finished:
+#         try:
+#             todo.remove(el)
+#         except:
+#             pass
+#         completed += 1
+
+#     return (todo, finished)
+    return (list(diff), list(finished))
 
 # remove?
 def scrape_setup_song(prev_stage_dir: Text,
