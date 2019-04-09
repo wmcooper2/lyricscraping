@@ -45,13 +45,13 @@ def count_artists(dir_: Text) -> int:
     return total
 
 
-def count_lines(file_: Text) -> int:
+def count_lines(file_: Text, msg: Text = None) -> int:
     """Counts lines in 'file_'. Returns Integer."""
     count = 0
     with open(file_, "r") as f:
         for line in f.readlines():
             count += 1
-            print('\r%s %s' % (count, "lines"), end='\r')
+            print('\r%s %s' % (msg, count), end='\r')
     print()
     return count
 
@@ -147,10 +147,10 @@ def load_categories(paths: Text) -> List[Text]:
     return temp
 
 
-def load_file_list(file_: Text) -> List[Text]:
+def load_file_list(file_: Text, msg: Text = None) -> List[Text]:
     """Loads 'file_'. Returns List."""
     temp = []
-    total = count_lines(file_)
+    total = count_lines(file_, msg)
     loaded = 0
     with open(file_, "r") as f:
         for line in f.readlines():
@@ -266,8 +266,8 @@ def scrape_setup(cur_todo: Text,
             - current todo file
             - current stage finished file
         Returns 2 Lists."""
-    todo = set(load_file_list(cur_todo))
-    finished = set(load_file_list(cur_fin))
+    todo = set(load_file_list(cur_todo, "To do:"))
+    finished = set(load_file_list(cur_fin, "Finished:"))
     todo_len = len(todo)
     finished_len = len(finished)
     completed = 0
