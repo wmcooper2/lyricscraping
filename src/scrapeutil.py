@@ -273,19 +273,8 @@ def scrape_setup(cur_todo: Text,
     completed = 0
     diff = todo.difference(finished)
     print("Unique todos:", len(diff))
-    
-
-#     for el in finished:
-#         try:
-#             todo.remove(el)
-#         except:
-#             pass
-#         completed += 1
-
-#     return (todo, finished)
     return (list(diff), list(finished))
 
-# remove?
 def scrape_setup_song(prev_stage_dir: Text,
                       cur_fin: Text) -> Tuple[List[Text], List[Text]]:
     """Determines which links need to be scraped. 
@@ -311,7 +300,6 @@ def three_requests(link: Text) -> Any:
     errors = 0
     request = simple_request(link)
     while request.status_code != 200 and errors < 3:
-        print("BACKING OFF {0} :: {1}".format(SLEEP_TIME, link))
         errors += 1
         sleep(SLEEP_TIME)
         request = simple_request(link)

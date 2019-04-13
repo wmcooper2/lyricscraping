@@ -4,11 +4,14 @@
 
 # stand lib
 from pathlib import Path
+from requests.exceptions import SSLError
+from ssl import SSLEOFError
 from string import ascii_uppercase as UPPERS
 from time import time
 from time import sleep
 from typing import Any
 from urllib.parse import unquote
+from urllib3.exceptions import MaxRetryError
 
 # 3rd party
 from bs4 import BeautifulSoup
@@ -68,8 +71,19 @@ def scrape() -> None:
                 save_lyrics(lyrics, symbol_dir+file_name)
         except AttributeError:
             save_append_line(link, LYRIC_ERRORS)
+        except IndexError:
+            save_append_line(link, LYRIC_ERRORS)
         except KeyboardInterrupt:
-            print("Stopped manually.")
+            print("\nStopped manually.")
+            quit()
+        except SSLEOFError: 
+            print("SSL EOF Error. Quitting...")
+            quit()
+        except MaxRetryError:
+            print("Max Retry Error. Quitting...")
+            quit()
+        except requests.exceptions.SSLError:
+            print("Request SSL Error. Quitting...")
             quit()
         completed += 1
         print('\r%s %s' % (completed, "lyrics"), end='\r')
