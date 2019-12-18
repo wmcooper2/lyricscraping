@@ -77,13 +77,13 @@ def scrape() -> None:
             print("\nStopped manually.")
             quit()
         except SSLEOFError: 
-            print("SSL EOF Error. Quitting...")
+            print("\nSSL EOF Error. Quitting...")
             quit()
         except MaxRetryError:
-            print("Max Retry Error. Quitting...")
+            print("\nMax Retry Error. Quitting...")
             quit()
         except requests.exceptions.SSLError:
-            print("Request SSL Error. Quitting...")
+            print("\nRequest SSL Error. Quitting...")
             quit()
         completed += 1
         print('\r%s %s' % (completed, "lyrics"), end='\r')

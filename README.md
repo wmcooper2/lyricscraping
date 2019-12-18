@@ -1,6 +1,8 @@
 # Lyric Scraping
 Scrapes lyrics from 'www.lyrics.com'
 
+![Lyrics Scraper](screenshot.png)
+
 ### Operation
 _The times taken to complete a stage as shown below are when the program is running on a macbook air. 
 HTTP requests rate is limited by the speed at which the program can process a single page. 

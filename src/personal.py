@@ -2,4 +2,4 @@
 # personal.py
 """Personal data module."""
 
-results = "/Volumes/WEEKLY/results/"
+results = "/Volumes/WEEKLY/results/"  # this external drive burned out, need to find a replacement

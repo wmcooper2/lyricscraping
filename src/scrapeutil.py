@@ -36,6 +36,12 @@ def buttontest() -> None:
     return None
 
 
+def count_all_lines(file_: Text) -> int:
+    """Counts all lines in 'file_'. Returns Integer."""
+    with open(file_, "r") as f:
+        return len(f.readlines())
+
+
 def count_artists(dir_: Text) -> int:
     """Counts unique artist links. Returns Integer."""
     total = 0

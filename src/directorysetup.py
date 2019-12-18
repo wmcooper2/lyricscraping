@@ -6,10 +6,10 @@
 
 # stand lib
 from pathlib import Path
+from typing import List
 
 # custom
-from constants import DIRS
-from constants import FILES
+from constants import DIRS, FILES
 
 
 def check(paths: List[str]) -> bool:
